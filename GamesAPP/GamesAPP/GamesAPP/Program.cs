@@ -1,6 +1,7 @@
 using GamesAPP.Client.Pages;
 using GamesAPP.Components;
 using GamesAPP.Data;
+using GamesAPP.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,10 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
-builder.Services.AddDbContext<DataContext>(options => 
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DabaseConnection"))
-    );
-//builder.Services.AddScoped<IGameServices, >
+builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DabaseConnection")));
+builder.Services.AddScoped<IGameService, GameService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
