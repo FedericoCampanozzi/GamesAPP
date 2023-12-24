@@ -20,6 +20,29 @@ else
 			<li>@game.Name <EditGameButton Id="game.Id" /> </li>
 		}
 	</ul>
+	<table>
+		<thead>
+			<tr>
+				<th>#ID</th>
+				<th>Name</th>
+				<th>Date</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var game in games)
+			{
+				<tr>
+					<td>@game.Id</td>
+					<td>@game.Name</td>
+					<td>@game.CreatedAt</td>
+					<td>
+						<EditGameButton Id="game.Id" />
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
 }
 
 <CreateGameButton />

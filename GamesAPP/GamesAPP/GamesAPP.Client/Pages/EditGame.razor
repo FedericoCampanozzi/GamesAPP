@@ -1,6 +1,7 @@
 ﻿@page "/edit-game"
 @page "/edit-game/{id:int}"
 @inject IGameService GameService
+@inject NavigationManager NavigationManager
 @rendermode InteractiveAuto
 
 @if (Id == null)
@@ -13,19 +14,19 @@ else
 }
 
 <EditForm Model="game" OnSubmit="HandlerSubmit">
-	<label>Name</label>
+	<label>Name:</label>
 	<InputText @bind-Value="game.Name">@game.Name</InputText>
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<button type="submit" class="btn btn-primary small-btn">Submit</button>
 	@if(Id != null)
 	{
-		<button @onclick="DeleteGame" type="button" class="btn btn-primary">Delete</button>
+		<button @onclick="DeleteGame" type="button" class="btn btn-danger small-btn">Delete</button>
 	}
 </EditForm>
 
 @code {
 	[Parameter]
 	public int? Id { get; set; }
-	Game game { get; set; }  = new Game { Name = string.Empty };
+	Game game { get; set; }  = new Game { Name = string.Empty, CreatedAt = new DateTime() };
 
 	protected override async Task OnParametersSetAsync()
 	{
@@ -45,10 +46,12 @@ else
 		{
 			await GameService.EditGame((int)Id, game);
 		}
+		NavigationManager.NavigateTo("/games");
 	}
 
 	async Task DeleteGame()
 	{
 		await GameService.DeleteGame((int)Id);
+		NavigationManager.NavigateTo("/games");
 	}
 }
