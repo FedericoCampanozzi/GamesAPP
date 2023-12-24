@@ -26,5 +26,10 @@ namespace GamesAPP.Shared.Services
 
             return game;
         }
-    }
+
+		async Task<Game> IGameService.GetGameById(int id)
+		{
+			return await _context.Games.FindAsync(id);
+		}
+	}
 }

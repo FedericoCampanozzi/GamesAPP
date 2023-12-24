@@ -1,9 +1,17 @@
 ﻿@page "/edit-game"
 @page "/edit-game/{id:int}"
 @inject IGameService GameService
-@rendermode InteractiveWebAssembly
+@rendermode InteractiveAuto
 
-<h3>EditGame</h3>
+@if (Id == null)
+{
+	<h3>Create Game</h3>
+}
+else
+{
+	<h3>Edit @game.Name</h3>
+}
+
 <EditForm Model="game" OnSubmit="HandlerSubmit">
 	<label>Name</label>
 	<InputText @bind-Value="game.Name">@game.Name</InputText>
@@ -14,6 +22,11 @@
 	[Parameter]
 	public int? Id { get; set; }
 	Game game { get; set; }  = new Game { Name = string.Empty };
+
+	protected override async Task OnParametersSetAsync()
+	{
+		game = await GameService.GetGameById((int)Id);
+	}
 
 	async Task HandlerSubmit()
 	{

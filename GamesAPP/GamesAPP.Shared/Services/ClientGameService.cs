@@ -28,5 +28,11 @@ namespace GamesAPP.Shared.Services
 		{
 			throw new NotImplementedException();
 		}
+
+		async Task<Game> IGameService.GetGameById(int id)
+		{
+			var result = await _httpClient.GetFromJsonAsync<Game>($"/api/game/{id}");
+			return result;
+		}
 	}
 }

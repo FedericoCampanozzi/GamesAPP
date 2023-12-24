@@ -13,9 +13,16 @@ namespace GamesAPP.Controllers
         public GameController(IGameService gameService)
         {
             this._gameService = gameService;
-        }
+		}
 
-        [HttpPost]
+		[HttpGet("{id}")]
+		public async Task<ActionResult<Game>> GetGameById(int id)
+		{
+			var game = await _gameService.GetGameById(id);
+			return Ok(game);
+		}
+
+		[HttpPost]
         public async Task<ActionResult<Game>> AddGame(Game game)
         {
             var addedGame = await _gameService.AddGame(game);
