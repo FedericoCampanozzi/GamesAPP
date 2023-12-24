@@ -1,5 +1,6 @@
 using GamesAPP.Client.Pages;
 using GamesAPP.Components;
+using GamesAPP.Components.Shared;
 using GamesAPP.Data;
 using GamesAPP.Services;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveWebAssemblyComponents();
+    .AddInteractiveWebAssemblyComponents() // To add Interactivity
+	.AddInteractiveServerComponents();
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DabaseConnection")));
 builder.Services.AddScoped<IGameService, GameService>();
@@ -33,6 +35,7 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode() // To add Interactivity
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(Counter).Assembly);
 

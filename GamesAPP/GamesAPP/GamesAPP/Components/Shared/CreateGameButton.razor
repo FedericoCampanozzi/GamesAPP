@@ -1,0 +1,12 @@
+﻿@inject NavigationManager NavigationManager
+@* To add Interactivity now need to import render mode and add @rendermode *@
+@rendermode InteractiveServer
+
+<button @onclick="NavigateToEditGamePage" class="btn btn-primary">Create Game</button>
+
+@code {
+	void NavigateToEditGamePage()
+	{
+		NavigationManager.NavigateTo("/edit-game");
+	}
+}
