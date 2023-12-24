@@ -18,5 +18,13 @@ namespace GamesAPP.Services
             var games = await _context.Games.ToListAsync();
             return games;
         }
+
+        public async Task<Game> AddGame(Game game)
+        {
+            _context.Games.Add(game);
+            await _context.SaveChangesAsync();
+
+            return game;
+        }
     }
 }
