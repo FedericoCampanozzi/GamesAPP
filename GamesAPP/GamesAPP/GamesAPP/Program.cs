@@ -1,19 +1,25 @@
 using GamesAPP.Client.Pages;
 using GamesAPP.Components;
-using GamesAPP.Components.Shared;
-using GamesAPP.Data;
-using GamesAPP.Services;
+using GamesAPP.Shared.Data;
+using GamesAPP.Shared.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveWebAssemblyComponents() // To add Interactivity
+    .AddInteractiveWebAssemblyComponents()
 	.AddInteractiveServerComponents();
+
+builder.Services.AddControllers();
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DabaseConnection")));
 builder.Services.AddScoped<IGameService, GameService>();
+
+builder.Services.AddScoped(http => new HttpClient
+{
+	BaseAddress = new Uri(builder.Configuration.GetSection("HttpClientURI").Value!)
+});
 
 var app = builder.Build();
 
@@ -34,8 +40,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
+app.MapControllers();
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode() // To add Interactivity
+    .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(Counter).Assembly);
 

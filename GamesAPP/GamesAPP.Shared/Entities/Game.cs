@@ -1,4 +1,4 @@
-﻿namespace GamesAPP.Entities
+﻿namespace GamesAPP.Shared.Entities
 {
     public class Game
     {

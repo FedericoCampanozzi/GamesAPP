@@ -1,6 +1,7 @@
 ﻿@page "/edit-game"
 @page "/edit-game/{id:int}"
 @inject IGameService GameService
+@rendermode InteractiveWebAssembly
 
 <h3>EditGame</h3>
 <EditForm Model="game" OnSubmit="HandlerSubmit">
@@ -12,8 +13,7 @@
 	@code {
 	[Parameter]
 	public int? Id { get; set; }
-
-	Game game = new Game { Name = string.Empty };
+	Game game { get; set; }  = new Game { Name = string.Empty };
 
 	async Task HandlerSubmit()
 	{

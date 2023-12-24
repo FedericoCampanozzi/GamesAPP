@@ -1,6 +1,6 @@
-﻿using GamesAPP.Entities;
+﻿using GamesAPP.Shared.Entities;
 
-namespace GamesAPP.Services
+namespace GamesAPP.Shared.Services
 {
     public interface IGameService
     {
