@@ -21,10 +21,4 @@
     <ProjectReference Include="..\GamesAPP.Client\GamesAPP.Client.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Update="Components\Shared\EditGameButton.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-  </ItemGroup>
-
 </Project>

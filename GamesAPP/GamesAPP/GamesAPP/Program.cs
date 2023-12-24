@@ -3,6 +3,8 @@ using GamesAPP.Components;
 using GamesAPP.Shared.Data;
 using GamesAPP.Shared.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,13 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DabaseConnection")));
+DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder();
+builder.Services.AddDbContext<DataContext>(
+    options => 
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DabaseConnection"),
+		b => b.MigrationsAssembly("GamesAPP")
+    )
+);
 builder.Services.AddScoped<IGameService, GameService>();
 
 builder.Services.AddScoped(http => new HttpClient

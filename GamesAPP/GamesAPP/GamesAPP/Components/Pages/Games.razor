@@ -14,13 +14,7 @@ else if(games.Count == 0)
 }
 else
 {
-	<ul>
-		@foreach (var game in games)
-		{
-			<li>@game.Name <EditGameButton Id="game.Id" /> </li>
-		}
-	</ul>
-	<table>
+	<table class="table">
 		<thead>
 			<tr>
 				<th>#ID</th>
@@ -35,9 +29,10 @@ else
 				<tr>
 					<td>@game.Id</td>
 					<td>@game.Name</td>
-					<td>@game.CreatedAt</td>
+					<td>@game.CreatedAt.ToString("dd MMM yyyy")</td>
 					<td>
-						<EditGameButton Id="game.Id" />
+						<GameButtonCaller SIDChange="UPDATE" Id="@game.Id" />
+						<GameButtonCaller SIDChange="DELETE" Id="@game.Id" />
 					</td>
 				</tr>
 			}
@@ -45,15 +40,15 @@ else
 	</table>
 }
 
-<CreateGameButton />
+<div class="add-btn">
+	<GameButtonCaller SIDChange="CREATE" Id="-1" />
+</div>
 
 @code {
 	List<Game>? games = null;
 
 	protected override async Task OnInitializedAsync()
 	{
-		// Simulate asynchronous loading to demonstrate streaming rendering
-		await Task.Delay(1000);
 		games = await GameService.GetAllGames();
 	}
 }
