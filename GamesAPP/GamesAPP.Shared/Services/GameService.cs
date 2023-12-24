@@ -31,5 +31,32 @@ namespace GamesAPP.Shared.Services
 		{
 			return await _context.Games.FindAsync(id);
 		}
+
+		public async Task<Game> EditGame(int id, Game game)
+		{
+			var dbGame = await _context.Games.FindAsync(id);
+			if (dbGame != null)
+			{
+				dbGame.Name = game.Name;
+				await _context.SaveChangesAsync();
+				return dbGame;
+			}
+            throw new Exception("Game not found");
+		}
+
+		public async Task<bool> DeleteGame(int id)
+		{
+			var dbGame = await _context.Games.FindAsync(id);
+            if (dbGame != null)
+            {
+                _context.Remove(dbGame);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            else 
+            { 
+                return false; 
+            }
+		}
 	}
 }

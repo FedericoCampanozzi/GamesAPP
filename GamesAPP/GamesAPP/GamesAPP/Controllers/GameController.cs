@@ -27,6 +27,20 @@ namespace GamesAPP.Controllers
         {
             var addedGame = await _gameService.AddGame(game);
             return Ok(addedGame);
-        }
-    }
+		}
+
+		[HttpPut("{id}")]
+		public async Task<ActionResult<Game>> EditGame(int id, Game game)
+		{
+			var updatedGame = await _gameService.EditGame(id, game);
+			return Ok(updatedGame);
+		}
+
+		[HttpDelete("{id}")]
+		public async Task<ActionResult<Game>> DeleteGame(int id)
+		{
+			var result = await _gameService.DeleteGame(id);
+			return Ok(result);
+		}
+	}
 }
