@@ -3,8 +3,9 @@ using GamesAPP.Components;
 using GamesAPP.Shared.Data;
 using GamesAPP.Shared.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,22 @@ builder.Services.AddRazorComponents()
 	.AddInteractiveServerComponents();
 
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("oauth2",
+        new OpenApiSecurityScheme()
+        {
+            In = ParameterLocation.Header,
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey
+        }
+    );
+
+    options.OperationFilter<SecurityRequirementsOperationFilter>();
+});
+builder.Services.AddAuthorization();
+builder.Services.AddIdentityApiEndpoints<IdentityUser>().AddEntityFrameworkStores<DataContext>();
 
 DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder();
 builder.Services.AddDbContext<DataContext>(
@@ -35,6 +52,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
+    app.UseSwagger();
+    app.UseSwaggerUI(swagger =>
+	{
+		swagger.SwaggerEndpoint("/swagger/v1/swagger.json", "Games APP SWAGGER API");
+	});
 }
 else
 {
@@ -45,9 +67,10 @@ else
 
 app.UseHttpsRedirection();
 
+app.MapIdentityApi<IdentityUser>();
 app.UseStaticFiles();
 app.UseAntiforgery();
-
+app.UseAuthorization();
 app.MapControllers();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
