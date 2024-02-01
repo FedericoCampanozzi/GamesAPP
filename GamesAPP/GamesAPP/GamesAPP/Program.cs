@@ -74,7 +74,7 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
-    .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Counter).Assembly);
+    .AddInteractiveWebAssemblyRenderMode();
+    //.AddAdditionalAssemblies(typeof(Counter).Assembly);
 
 app.Run();

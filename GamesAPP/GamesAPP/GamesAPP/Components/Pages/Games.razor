@@ -2,6 +2,7 @@
 @inject IGameService GameService
 @attribute [StreamRendering(true)]
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
 
 @if (UserAuthenticated)
 {
@@ -62,5 +63,9 @@ else
 		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 		var user = authState.User;
 		UserAuthenticated = user.Identity.IsAuthenticated; //&& user.IsInRole("Admin");
+		if (!UserAuthenticated)
+		{
+				NavigationManager.NavigateTo("/login");
+		}
 	}
 }
