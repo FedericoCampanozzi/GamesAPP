@@ -1,6 +1,8 @@
+using GamesAPP;
 using GamesAPP.Client.Pages;
 using GamesAPP.Components;
 using GamesAPP.Shared.Data;
+using GamesAPP.Shared.Entities;
 using GamesAPP.Shared.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -8,7 +10,6 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents()
 	.AddInteractiveServerComponents();
@@ -31,15 +32,48 @@ builder.Services.AddScoped(http => new HttpClient
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
+	if (builder.Configuration.GetValue<bool>("SeedDatabase"))
+	{
+		try
+		{
+			using (var scope = app.Services.CreateScope())
+			{
+				var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+
+				Order.DeleteAllItems(dbContext);
+				Post.DeleteAllItems(dbContext);
+				User.DeleteAllItems(dbContext);
+				Warehouse.DeleteAllItems(dbContext);
+				Product.DeleteAllItems(dbContext);
+
+				var gameSeeder = new DataSeeder(dbContext);
+				gameSeeder.SeedData<Product, Product>(20);
+				gameSeeder.SeedData<Warehouse, Warehouse>(10);
+				gameSeeder.SeedData<User, User>(5);
+				// Need to be chuncked because some order made from user and some from store
+				int chunck = 20;
+				int nForChunck = 5;
+				for (int i = 0; i < chunck; i++)
+					gameSeeder.SeedData<Order, Order>(nForChunck);
+				// ***
+				gameSeeder.SeedData<Post, Post>(50);
+			}
+
+			Console.WriteLine("Database generate correctly\n\n");
+		}
+		catch(Exception e)
+		{
+			Console.WriteLine("Error during database generation\n");
+			Console.WriteLine(e.Message);
+		}
+	}
 }
 else
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

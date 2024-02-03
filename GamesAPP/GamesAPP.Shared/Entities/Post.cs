@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Bogus;
+using GamesAPP.Shared.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,14 +8,31 @@ using System.Threading.Tasks;
 
 namespace GamesAPP.Shared.Entities
 {
-	public class Post
+	public class Post: IEntitySeeder<Post>
 	{
-		public required int Id { get; set; }
-		public required DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-		public required string Title { get; set; }
-		public required string PostText { get; set; }
-		public required string PostSummery { get; set; }
+		public int Id { get; set; }
+		public DateTime CreatedAt { get; set; } = DateTime.Now;
+		public string Title { get; set; } = string.Empty;
+		public string PostText { get; set; } = string.Empty;
+		public string PostSummery { get; set; } = string.Empty;
 		public required User Author { get; set; }
 		public required Product Product { get; set; }
+
+		public static Faker<Post> GetEntitySeeder(DataContext _data)
+		{
+			return new Faker<Post>()
+				.RuleFor(e => e.Title, f => f.Lorem.Word())
+				.RuleFor(e => e.PostText, f => f.Lorem.Text())
+				.RuleFor(e => e.PostSummery, f => f.Lorem.Text())
+				.RuleFor(e => e.Author, f => f.PickRandom(_data.Users.ToArray()))
+				.RuleFor(e => e.Product, f => f.PickRandom(_data.Products.ToArray()));
+		}
+
+		public static void DeleteAllItems(DataContext _data)
+		{
+			var allRecords = _data.Posts.ToList();
+			_data.Posts.RemoveRange(allRecords);
+			_data.SaveChanges();
+		}
 	}
 }
