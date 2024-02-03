@@ -1,0 +1,13 @@
+﻿@inject NavigationManager NavigationManager
+@inject IAuthenticationService AuthenticationService
+
+@code {
+	[Parameter]
+	public string PageToRedirect { get; set; } = String.Empty;
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (!AuthenticationService.IsUserAuthenticated) 
+			NavigationManager.NavigateTo($"/login/{PageToRedirect}");
+	}
+}

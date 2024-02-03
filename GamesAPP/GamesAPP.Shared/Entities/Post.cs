@@ -21,6 +21,7 @@ namespace GamesAPP.Shared.Entities
 		public static Faker<Post> GetEntitySeeder(DataContext _data)
 		{
 			return new Faker<Post>()
+				.RuleFor(e => e.CreatedAt, f => f.Date.Past(1))
 				.RuleFor(e => e.Title, f => f.Lorem.Word())
 				.RuleFor(e => e.PostText, f => f.Lorem.Text())
 				.RuleFor(e => e.PostSummery, f => f.Lorem.Text())

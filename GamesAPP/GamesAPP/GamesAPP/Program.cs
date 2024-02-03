@@ -24,6 +24,7 @@ builder.Services.AddDbContext<DataContext>(
     )
 );
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddScoped(http => new HttpClient
 {

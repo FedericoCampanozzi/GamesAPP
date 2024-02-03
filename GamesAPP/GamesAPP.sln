@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesAPP", "GamesAPP\GamesA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesAPP.Client", "GamesAPP\GamesAPP.Client\GamesAPP.Client.csproj", "{F5356A30-F574-4A9C-B1BA-F05EAFCDE7A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamesAPP.Shared", "GamesAPP.Shared\GamesAPP.Shared.csproj", "{4272E8ED-945E-4F49-B04B-9F94F346DAB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamesAPP.Shared", "GamesAPP.Shared\GamesAPP.Shared.csproj", "{4272E8ED-945E-4F49-B04B-9F94F346DAB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

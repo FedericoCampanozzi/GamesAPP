@@ -23,6 +23,7 @@ namespace GamesAPP.Shared.Entities
 
 			if (rnd.Next(0, 2) == 0)
 				return new Faker<Order>()
+					.RuleFor(e => e.CreatedAt, f => f.Date.Past(1))
 					.RuleFor(e => e.Quantity, f => rnd.Next(11))
 					.RuleFor(e => e.Product, f => f.PickRandom(_data.Products.ToArray()))
 					.RuleFor(e => e.Warehouse, f => null)
