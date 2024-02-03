@@ -1,7 +1,7 @@
 ﻿@inject NavigationManager NavigationManager
 @* To add Interactivity now need to import RenderMode and add @rendermode like this *@
 @rendermode InteractiveServer
-@inject IGameService GameService
+@inject IProductService GameService
 
 @if (SIDChange == "CREATE")
 {
@@ -48,7 +48,7 @@
 	}
 	async void DeleteGame()
 	{
-		await GameService.DeleteGame((int)Id);
+		//await GameService.DeleteGame((int)Id);
 		NavigationManager.NavigateTo("/games");
 	}
 }

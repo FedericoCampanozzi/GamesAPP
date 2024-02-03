@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Bogus;
+using GamesAPP.Shared.Data;
 
 namespace GamesAPP.Shared.Entities
 {
-	public class Warehouse
+	public class Warehouse : IEntitySeeder<Warehouse>
 	{
 		public int Id { get; set; }
-		public required DateTime CreatedAt { get; set; }
-		public required string Name { get; set; }
-		public required string Address { get; set; }
-		public List<Order> Order { get; set; } = new List<Order>();
+		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+		public string Name { get; set; } = string.Empty;
+		public string Address { get; set; } = string.Empty;
+
+		public static Faker<Warehouse> GetEntitySeeder(DataContext _data)
+		{
+			return new Faker<Warehouse>()
+				.RuleFor(e => e.Name, f => f.Company.CompanyName())
+				.RuleFor(e => e.Address, f => f.Address.FullAddress());
+		}
 	}
 }

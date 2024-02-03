@@ -7,6 +7,6 @@ builder.Services.AddScoped(http => new HttpClient
 {
 	BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
 });
-builder.Services.AddScoped<IGameService, ClientGameService>();
+builder.Services.AddScoped<IProductService, ClientProductService>();
 
 await builder.Build().RunAsync();

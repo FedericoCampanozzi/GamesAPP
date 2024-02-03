@@ -1,71 +1,57 @@
-﻿@page "/games"
-@inject IGameService GameService
+﻿@page "/products"
+@inject IProductService ProductService
 @attribute [StreamRendering(true)]
-@inject AuthenticationStateProvider AuthenticationStateProvider
-@inject NavigationManager NavigationManager
 
-@if (UserAuthenticated)
+<CheckLogin PageToRedirect="products" />
+
+<h3>ProductList</h3>
+
+@if (products == null)
 {
-	<h3>GameList</h3>
-
-	@if (games == null)
-	{
-		<span>Loading...</span>	
-	}
-	else if(games.Count == 0)
-	{
-		<span>No games found.</span>
-	}
-	else
-	{
-		<table class="table">
-			<thead>
-				<tr>
-					<th>#ID</th>
-					<th>Name</th>
-					<th>Date</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var game in games)
-				{
-					<tr>
-						<td>@game.Id</td>
-						<td>@game.Name</td>
-						<td>@game.CreatedAt.ToString("dd MMM yyyy")</td>
-						<td>
-							<GameButtonCaller SIDChange="UPDATE" Id="@game.Id" />
-							<GameButtonCaller SIDChange="DELETE" Id="@game.Id" />
-						</td>
-					</tr>
-				}
-			</tbody>
-		</table>
-	}
-
-	<div class="add-btn">
-		<GameButtonCaller SIDChange="CREATE" Id="-1" />
-	</div>
+	<span>Loading...</span>	
+}
+else if (products.Count == 0)
+{
+	<span>No games found.</span>
 }
 else
 {
-	<span>User is not Authenticated</span>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>#ID</th>
+				<th>Name</th>
+				<th>Date</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var game in products)
+			{
+				<tr>
+					<td>@game.Id</td>
+					<td>@game.Name</td>
+					<td>@game.CreatedAt.ToString("dd MMM yyyy")</td>
+					<td>
+						<GameButtonCaller SIDChange="UPDATE" Id="@game.Id" />
+						<GameButtonCaller SIDChange="DELETE" Id="@game.Id" />
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+<div class="add-btn">
+	<GameButtonCaller SIDChange="CREATE" Id="-1" />
+</div>
 }
 
 @code {
-	List<Game>? games = null;
-	bool UserAuthenticated = false;
+	List<Product>? products = null;
 
 	protected override async Task OnInitializedAsync()
 	{
-		games = await GameService.GetAllGames();
-		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-		var user = authState.User;
-		UserAuthenticated = user.Identity.IsAuthenticated; //&& user.IsInRole("Admin");
-		if (!UserAuthenticated)
-		{
-				NavigationManager.NavigateTo("/login");
-		}
+		products = await ProductService.GetAllProducts();
 	}
 }

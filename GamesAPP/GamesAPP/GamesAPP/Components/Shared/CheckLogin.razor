@@ -1,0 +1,19 @@
+﻿@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+@code {
+	[Parameter]
+	public string PageToRedirect { get; set; } = String.Empty;
+
+	public string AA { get; set; } = "AAA";
+
+	protected override async Task OnInitializedAsync()
+	{
+		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+		var Identity = authState.User.Identity;
+		if (Identity != null && !Identity.IsAuthenticated)
+		{
+			NavigationManager.NavigateTo($"/login/{PageToRedirect}");
+		}
+	}
+}

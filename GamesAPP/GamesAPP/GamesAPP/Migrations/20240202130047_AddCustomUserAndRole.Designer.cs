@@ -4,6 +4,7 @@ using GamesAPP.Shared.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamesAPP.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240202130047_AddCustomUserAndRole")]
+    partial class AddCustomUserAndRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,26 @@ namespace GamesAPP.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("GamesAPP.Shared.Entities.Game", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Games");
+                });
 
             modelBuilder.Entity("GamesAPP.Shared.Entities.Order", b =>
                 {
@@ -33,8 +56,11 @@ namespace GamesAPP.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("UserCreatedId")
                         .HasColumnType("int");
@@ -44,7 +70,7 @@ namespace GamesAPP.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("GameId");
 
                     b.HasIndex("UserCreatedId");
 
@@ -64,6 +90,9 @@ namespace GamesAPP.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PostSummery")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -71,9 +100,6 @@ namespace GamesAPP.Migrations
                     b.Property<string>("PostText")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -84,14 +110,14 @@ namespace GamesAPP.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("GameId");
 
                     b.HasIndex("UserCreatedId");
 
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("GamesAPP.Shared.Entities.Product", b =>
+            modelBuilder.Entity("GamesAPP.Shared.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -102,17 +128,13 @@ namespace GamesAPP.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("GamesAPP.Shared.Entities.User", b =>
@@ -130,11 +152,7 @@ namespace GamesAPP.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -142,17 +160,22 @@ namespace GamesAPP.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Role")
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("MyUsers");
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("GamesAPP.Shared.Entities.Warehouse", b =>
@@ -170,16 +193,16 @@ namespace GamesAPP.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("GameId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("GameId");
 
                     b.ToTable("Warehouses");
                 });
@@ -384,9 +407,9 @@ namespace GamesAPP.Migrations
 
             modelBuilder.Entity("GamesAPP.Shared.Entities.Order", b =>
                 {
-                    b.HasOne("GamesAPP.Shared.Entities.Product", "Product")
+                    b.HasOne("GamesAPP.Shared.Entities.Game", "Game")
                         .WithMany("Orders")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -395,10 +418,10 @@ namespace GamesAPP.Migrations
                         .HasForeignKey("UserCreatedId");
 
                     b.HasOne("GamesAPP.Shared.Entities.Warehouse", "Warehouse")
-                        .WithMany()
+                        .WithMany("Order")
                         .HasForeignKey("WarehouseId");
 
-                    b.Navigation("Product");
+                    b.Navigation("Game");
 
                     b.Navigation("UserCreated");
 
@@ -407,9 +430,9 @@ namespace GamesAPP.Migrations
 
             modelBuilder.Entity("GamesAPP.Shared.Entities.Post", b =>
                 {
-                    b.HasOne("GamesAPP.Shared.Entities.Product", "Product")
+                    b.HasOne("GamesAPP.Shared.Entities.Game", "Game")
                         .WithMany("Posts")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -419,16 +442,27 @@ namespace GamesAPP.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.Navigation("Game");
 
                     b.Navigation("UserCreated");
                 });
 
+            modelBuilder.Entity("GamesAPP.Shared.Entities.User", b =>
+                {
+                    b.HasOne("GamesAPP.Shared.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("GamesAPP.Shared.Entities.Warehouse", b =>
                 {
-                    b.HasOne("GamesAPP.Shared.Entities.Product", null)
+                    b.HasOne("GamesAPP.Shared.Entities.Game", null)
                         .WithMany("Warehouses")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("GameId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -482,13 +516,18 @@ namespace GamesAPP.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GamesAPP.Shared.Entities.Product", b =>
+            modelBuilder.Entity("GamesAPP.Shared.Entities.Game", b =>
                 {
                     b.Navigation("Orders");
 
                     b.Navigation("Posts");
 
                     b.Navigation("Warehouses");
+                });
+
+            modelBuilder.Entity("GamesAPP.Shared.Entities.Warehouse", b =>
+                {
+                    b.Navigation("Order");
                 });
 #pragma warning restore 612, 618
         }

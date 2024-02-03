@@ -1,10 +1,31 @@
-﻿@page "/login"
+﻿@page "/login/{pagetoredirect}"
 @attribute [StreamRendering(true)]
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
 @layout Layout.BlankLayout
 
 <h3>Login</h3>
 
-@code {
+<label>Username:</label>
+<InputText @bind-Value="Username">@Username</InputText><br />
+<label>Password:</label>
+<InputText @bind-Value="Password">@Password</InputText><br />
+<button type="submit" class="btn btn-outline-primary small-btn" @onclick="HandlerSubmit">
+	Login
+</button>
 
+<span>if don't have any account click <a href="/registration">here</a> to create one </span>
+
+@code {
+	[Parameter]
+	public string PageToRedirect { get; set; } = String.Empty;
+
+	public string Username { get; set; } = String.Empty;
+
+	public string Password { get; set; } = String.Empty;
+
+	async Task HandlerSubmit()
+	{
+	}
 }
+
