@@ -1,0 +1,60 @@
+﻿@page "/create-product/{sid}"
+@page "/update-product/{sid}/{id:int}"
+
+@inject IProductService ProductService
+@inject NavigationManager NavigationManager
+@rendermode InteractiveAuto
+
+@if (Id == null)
+{
+	<h3>Create Product</h3>
+}
+else
+{
+	<h3>Edit @product.Name</h3>
+}
+
+<EditForm Model="product" OnSubmit="HandlerSubmit">
+	<label>Name:</label>
+	<InputText @bind-Value="product.Name">@product.Name</InputText>
+	<label>Description:</label>
+	<InputText @bind-Value="product.Description">@product.Description</InputText>
+	<br />
+	<button type="submit" class="btn btn-outline-primary small-btn">
+		@SID
+	</button>
+</EditForm>
+
+@code {
+	[Parameter]
+	public int? Id { get; set; }
+	[Parameter]
+	public string SID { get; set; } = String.Empty;
+
+	Product product { get; set; }  = new Product { 
+		Name = string.Empty,
+		Description = string.Empty,
+		CreatedAt = DateTime.Now 
+	};
+
+	protected override async Task OnParametersSetAsync()
+	{
+		if(Id != null)
+		{
+			product = await ProductService.GetProductById((int)Id);
+		}
+	}
+
+	async Task HandlerSubmit()
+	{
+		if(Id == null)
+		{
+			await ProductService.AddProduct(product);
+		}
+		else
+		{
+			await ProductService.EditProduct((int)Id, product);
+		}
+		NavigationManager.NavigateTo("/products");
+	}
+}

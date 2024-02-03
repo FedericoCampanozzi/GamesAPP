@@ -10,6 +10,6 @@ namespace GamesAPP.Shared.Data
         {
         }
 
-        public DbSet<Game> Games { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 }

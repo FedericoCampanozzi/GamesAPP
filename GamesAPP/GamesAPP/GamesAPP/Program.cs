@@ -22,7 +22,7 @@ builder.Services.AddDbContext<DataContext>(
 		b => b.MigrationsAssembly("GamesAPP")
     )
 );
-builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddScoped(http => new HttpClient
 {
