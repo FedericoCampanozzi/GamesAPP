@@ -11,5 +11,6 @@ namespace GamesAPP.Shared.Services
     {
         Task<List<Order>> GetAllOrder();
         Task<Order> AddOrder(Order order);
-    }
+		Task<List<Order>> GetAllOrdersFromWarehouse(int id);
+	}
 }

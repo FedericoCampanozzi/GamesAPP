@@ -52,5 +52,19 @@ namespace GamesAPP.Shared.Services
             var users = await _context.Users.ToListAsync();
             return users;
         }
-    }
+
+		bool IUserService.Login(string username, string password)
+		{
+			AuthenticationService.UserAuthenticated = _context.Users.Where(
+					u => u.UserName == username && u.Password == password
+				).FirstOrDefault<User>();
+			Console.WriteLine($"\nTry to Login {username} {AuthenticationService.UserAuthenticated?.ToString()}\n");
+			return AuthenticationService.IsUserAuthenticated;
+		}
+
+		void IUserService.Logout()
+		{
+			AuthenticationService.UserAuthenticated = null;
+		}
+	}
 }

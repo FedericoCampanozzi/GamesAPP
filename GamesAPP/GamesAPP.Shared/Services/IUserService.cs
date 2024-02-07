@@ -13,5 +13,7 @@ namespace GamesAPP.Shared.Services
         Task<List<string>> GetAllRoles();
         Task<User> AddUser(User user);
         Task<User> EditUser(int id, User user);
-    }
+		bool Login(string username, string password);
+		void Logout();
+	}
 }

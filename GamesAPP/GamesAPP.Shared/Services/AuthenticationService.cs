@@ -1,4 +1,5 @@
-﻿using GamesAPP.Shared.Entities;
+﻿using GamesAPP.Shared.Data;
+using GamesAPP.Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,24 +10,14 @@ namespace GamesAPP.Shared.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
-        public User? UserAuthenticated { get; private set; } = null;
+        public static User? UserAuthenticated { get; set; } = null;
 
-        public bool IsUserAuthenticated
+        public static bool IsUserAuthenticated
         {
             get
             {
-                return this.UserAuthenticated != null;
+                return UserAuthenticated != null;
             }
         }
-
-        void IAuthenticationService.Login(string username, string password)
-        {
-
-        }
-
-        void IAuthenticationService.Logout()
-        {
-            UserAuthenticated = null;
-        }
-    }
+	}
 }

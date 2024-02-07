@@ -19,6 +19,11 @@ namespace GamesAPP.Shared.Entities
 		public string Password { get; set; } = string.Empty;
 		public string Role { get; set; } = string.Empty;
 
+		public override string ToString()
+		{
+			return $"User {{Id: {Id}, FirstName: {FirstName}, LastName: {LastName}, UserName: {UserName}}}";
+		}
+
 		public static Faker<User> GetEntitySeeder(DataContext _data)
 		{
 			return new Faker<User>()

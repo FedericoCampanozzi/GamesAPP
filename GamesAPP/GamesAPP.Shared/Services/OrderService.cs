@@ -31,5 +31,11 @@ namespace GamesAPP.Shared.Services
             var orders = await _context.Orders.ToListAsync();
             return orders;
         }
-    }
+
+		async Task<List<Order>> IOrderService.GetAllOrdersFromWarehouse(int id)
+		{
+            var orders = await _context.Orders.Where(o=> o.Warehouse != null && o.Warehouse.Id == id).ToListAsync();
+            return orders;
+		}
+	}
 }

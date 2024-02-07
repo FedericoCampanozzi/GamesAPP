@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace GamesAPP.Shared.Services
 {
-    public interface IAuthenticationService
-    {
-    }
+	public interface IWarehouseService
+	{
+		Task<List<Warehouse>> GetAllWarehouses();
+	}
 }
