@@ -2,8 +2,6 @@
 @inject IProductService ProductService
 @attribute [StreamRendering(true)]
 
-<Authentication PageToRedirect="products" />
-
 @if (products == null)
 {
 	<span>Loading...</span>	

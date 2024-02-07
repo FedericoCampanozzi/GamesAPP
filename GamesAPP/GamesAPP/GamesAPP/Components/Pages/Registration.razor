@@ -1,7 +1,39 @@
 ﻿@page "/registration"
 
+@rendermode InteractiveServer
+@inject IUserService UserService
+@layout Layout.BlankLayout
+
 <h3>Registration</h3>
 
-@code {
+<EditForm Model="User" OnSubmit="InsertUser">
+	<label>First Name:</label>
+	<InputText @bind-Value="User.FirstName">@User.FirstName</InputText>
+	<label>Last Name:</label>
+	<InputText @bind-Value="User.LastName">@User.LastName</InputText>
+	<label>Email:</label>
+	<InputText @bind-Value="User.Email">@User.Email</InputText>
+	<label>Username:</label>
+	<InputText @bind-Value="User.UserName">@User.UserName</InputText>
+	<label>Password:</label>
+	<InputText @bind-Value="User.Password">@User.Password</InputText>
+	<label>Confirm Password:</label>
+	<InputText @bind-Value="ConfirmationPassword">@ConfirmationPassword</InputText>
+	<button type="submit" class="btn btn-outline-primary small-btn">
+		Registrate & Login
+	</button>
+</EditForm>
 
+@code {
+	public User User { get; set; } = new User();
+	public string ConfirmationPassword { get; set; } = String.Empty;
+
+	void InsertUser()
+	{
+		if(ConfirmationPassword == User.Password)
+		{
+			UserService.AddUser(User);
+			UserService.Login(User.UserName, User.Password);
+		}
+	}
 }

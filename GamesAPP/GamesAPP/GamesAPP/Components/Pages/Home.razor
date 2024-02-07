@@ -1,3 +1,51 @@
 ﻿@page "/"
 
+@attribute [StreamRendering(true)]
+@rendermode InteractiveServer
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+
 <PageTitle>Home</PageTitle>
+
+@if (!AuthenticationService.IsUserAuthenticated)
+{
+	<h3>Welcome to BLABLABLA homepage</h3>
+	<label>Username:</label>
+	<InputText @bind-Value="Username">@Username</InputText>
+	<br />
+	<div style="margin-top:20px">
+		<label>Password:</label>
+		<InputText @bind-Value="Password">@Password</InputText>
+	</div>
+	<br />
+	<button type="submit" class="btn btn-outline-primary small-btn" @onclick="TryToLoginUser">
+		Login
+	</button>
+	<br />
+	<span>if don't have any account click <a href="/registration">here</a> to create one </span>
+}
+else
+{
+	<h3>Welcome back @AuthenticationService.UserAuthenticated?.UserName</h3>
+	<br />
+	<h2>Yuo are logged as @AuthenticationService.UserAuthenticated?.Role</h2>
+}
+
+@code {
+	public string Username { get; set; } = String.Empty;
+
+	public string Password { get; set; } = String.Empty;
+
+	void TryToLoginUser()
+	{
+		if (UserService.Login(Username, Password))
+		{
+			NavigationManager.NavigateTo("/");
+		}
+		else
+		{
+			Username = "";
+			Password = "";
+		}
+	}
+}

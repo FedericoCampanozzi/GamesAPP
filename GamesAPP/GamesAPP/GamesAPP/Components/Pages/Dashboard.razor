@@ -1,7 +1,92 @@
 ﻿@page "/dashboard"
 
+@inject IUserService UserService
+@inject IProductService ProductService
+@inject IOrderService OrderService
+@inject IWarehouseService WarehouseService
+
 <h3>Dashboard</h3>
 
-@code {
+<table class="table">
+	<thead>
+		<tr>
+			<th>#ID</th>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>User Name</th>
+			<th>Role</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var user in Users)
+		{
+			<tr>
+				<td>@user.Id</td>
+				<td>@user.FirstName</td>
+				<td>@user.LastName</td>
+				<td>@user.UserName</td>
+				<td>@user.Role</td>
+			</tr>
+		}
+	</tbody>
+</table>
 
+<table class="table">
+	<thead>
+		<tr>
+			<th>#ID</th>
+			<th>Address</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var warehouse in Warehouses)
+		{
+			<tr>
+				<td>@warehouse.Id</td>
+				<td>@warehouse.Address</td>
+				<td>
+					<ButtonCaller Prefab="ORDER_PER_WAREHOUSE" />
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>#ID</th>
+			<th>Address</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var warehouse in warehouses)
+		{
+			<tr>
+				<td>@warehouse.Id</td>
+				<td>@warehouse.Address</td>
+				<td>
+					<NavLink class="nav-link" href="dashboard">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lock" viewBox="0 0 16 16">
+							<path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m0 5.996V14H3s-1 0-1-1 1-4 6-4q.845.002 1.544.107a4.5 4.5 0 0 0-.803.918A11 11 0 0 0 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664zM9 13a1 1 0 0 1 1-1v-1a2 2 0 1 1 4 0v1a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zm3-3a1 1 0 0 0-1 1v1h2v-1a1 1 0 0 0-1-1" />
+						</svg>
+					</NavLink>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@code {
+	List<User> users = new List<User>();
+	List<Product> products = new List<Product>();
+	List<Warehouse> warehouses = new List<Warehouse>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		products = await ProductService.GetAllProducts();
+		warehouses = await WarehouseService.GetAllWarehouses();
+	}
 }

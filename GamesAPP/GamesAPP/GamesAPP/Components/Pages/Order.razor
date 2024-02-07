@@ -1,6 +1,16 @@
 ﻿@page "/order"
+@inject IOrderService OrderService
 
 <h3>Order</h3>
+
+@if(AuthenticationService.UserAuthenticated?.Role == "User")
+{
+	
+}
+else
+{
+	
+}
 
 @code {
 
