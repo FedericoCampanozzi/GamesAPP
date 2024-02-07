@@ -41,6 +41,9 @@ builder.Services.AddDbContext<DataContext>(
 );
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IWarehouseService, WarehouseService>();
 
 builder.Services.AddScoped(http => new HttpClient
 {
