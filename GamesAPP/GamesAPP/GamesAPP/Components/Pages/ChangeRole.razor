@@ -1,0 +1,41 @@
+﻿@page "/update-user-role/{id:int}"
+
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+@rendermode InteractiveAuto
+
+<h3>Edit @user.UserName</h3>
+
+<EditForm Model="user" OnSubmit="HandlerSubmit">
+	<label>Role:</label>
+	<select value="@user.Role" class="form-control">
+		@foreach (string role in roles)
+		{
+			<option value="@role">@role</option>
+		}
+	</select>
+		<br />
+		<button type="submit" class="btn btn-outline-primary small-btn">
+			Change Role
+	</button>
+</EditForm>
+
+@code {
+	[Parameter]
+	public int Id { get; set; }
+
+	User user { get; set; } = new User();
+	List<string> roles = new List<string>();
+
+	protected override async Task OnParametersSetAsync()
+	{
+		user = await UserService.GetUserById((int)Id);
+		roles = await UserService.GetAllRoles();
+	}
+
+	async Task HandlerSubmit()
+	{
+		await UserService.EditUser(user.Id, user);
+		NavigationManager.NavigateTo("/dashboard");
+	}
+}

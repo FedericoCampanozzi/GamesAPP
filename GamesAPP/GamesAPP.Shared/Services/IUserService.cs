@@ -10,6 +10,7 @@ namespace GamesAPP.Shared.Services
     public interface IUserService
     {
         Task<List<User>> GetAllUsers();
+        Task<User> GetUserById(int id);
         Task<List<string>> GetAllRoles();
         Task<User> AddUser(User user);
         Task<User> EditUser(int id, User user);

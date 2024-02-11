@@ -42,6 +42,7 @@ namespace GamesAPP.Shared.Services
         {
             var roles = await _context.Users
                 .Select(u => u.Role)
+                .Distinct()
                 .ToListAsync();
 
             return roles;
@@ -65,6 +66,11 @@ namespace GamesAPP.Shared.Services
 		void IUserService.Logout()
 		{
 			AuthenticationService.UserAuthenticated = null;
+		}
+
+		public async Task<User> GetUserById(int id)
+		{
+            return await _context.Users.FindAsync(id);
 		}
 	}
 }

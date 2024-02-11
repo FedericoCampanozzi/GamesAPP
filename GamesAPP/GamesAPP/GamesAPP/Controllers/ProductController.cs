@@ -18,8 +18,8 @@ namespace GamesAPP.Controllers
 		[HttpGet("{id}")]
 		public async Task<ActionResult<Product>> GetProductById(int id)
 		{
-			var game = await _productService.GetProductById(id);
-			return Ok(game);
+			var product = await _productService.GetProductById(id);
+			return Ok(product);
 		}
 
 		[HttpPost]

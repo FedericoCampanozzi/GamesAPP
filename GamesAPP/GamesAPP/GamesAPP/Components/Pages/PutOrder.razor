@@ -1,0 +1,69 @@
+﻿@page "/put-order"
+
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+@inject IProductService ProductService
+@inject IWarehouseService WarehouseService
+@inject IOrderService OrderService
+
+<EditForm Model="Order" OnSubmit="InsertOrder">
+
+	@if (AuthenticationService.UserAuthenticated?.Role == "Store")
+	{
+		<label>Product:</label>
+		<select value="@Order?.Product.Id" class="form-control">
+			@foreach (Product p in Products)
+			{
+				<option value="@p.Id">@p.Name</option>
+			}
+		</select>
+		<label>Warehouse:</label>
+		<select value="@Order?.Warehouse?.Id" class="form-control">
+			@foreach (Product p in Products)
+			{
+				<option value="@p.Id">@p.Name</option>
+			}
+		</select>
+	}
+
+	<label>Quantity:</label>
+	@if(Order != null)
+	{
+		<InputNumber @bind-Value="@Order.Quantity" />
+	}
+
+	<button type="submit" class="btn btn-outline-primary small-btn">
+		Put Order
+	</button>
+</EditForm>
+
+	@code {
+	public Order? Order { get; set; }
+	public List<Product> Products { get; set; } = new List<Product>();
+	public List<Warehouse> Warehouses { get; set; }  = new List<Warehouse>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (AuthenticationService.UserAuthenticated == null)
+		{
+			throw new Exception("AuthenticationService.UserAuthenticated is null");
+		}
+
+		Products = await ProductService.GetAllProducts();
+		Warehouses = await WarehouseService.GetAllWarehouses();
+		Order = new Order()
+		{
+				Product = Products[0],
+				Warehouse = null,
+				User = AuthenticationService.UserAuthenticated
+		};
+	}
+
+	void InsertOrder()
+	{
+		if(Order != null)
+		{
+			OrderService.AddOrder(Order);	
+		}
+	}
+}
