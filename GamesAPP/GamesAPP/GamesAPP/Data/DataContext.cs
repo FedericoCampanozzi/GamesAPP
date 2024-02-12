@@ -1,7 +1,7 @@
-﻿using GamesAPP.Shared.Entities;
+﻿using GamesAPP.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace GamesAPP.Shared.Data
+namespace GamesAPP.Data
 {
     public class DataContext : DbContext
     {

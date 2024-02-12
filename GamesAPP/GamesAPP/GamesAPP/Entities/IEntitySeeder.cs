@@ -1,4 +1,4 @@
-﻿using GamesAPP.Shared.Data;
+﻿using GamesAPP.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bogus;
 
-namespace GamesAPP.Shared.Entities
+namespace GamesAPP.Entities
 {
 	public interface IEntitySeeder<T> where T : class
 	{

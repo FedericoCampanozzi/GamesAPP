@@ -1,9 +1,8 @@
 using GamesAPP;
-using GamesAPP.Client.Pages;
 using GamesAPP.Components;
-using GamesAPP.Shared.Data;
-using GamesAPP.Shared.Entities;
-using GamesAPP.Shared.Services;
+using GamesAPP.Data;
+using GamesAPP.Entities;
+using GamesAPP.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Options;

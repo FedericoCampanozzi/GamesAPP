@@ -1,5 +1,5 @@
-﻿using GamesAPP.Shared.Data;
-using GamesAPP.Shared.Entities;
+﻿using GamesAPP.Data;
+using GamesAPP.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GamesAPP.Shared.Services
+namespace GamesAPP.Services
 {
     public class OrderService : IOrderService
     {
@@ -27,10 +27,14 @@ namespace GamesAPP.Shared.Services
         }
 
         public async Task<List<Order>> GetAllOrder()
-        {
-            var orders = await _context.Orders.ToListAsync();
-            return orders;
-        }
+		{
+			var orders = await _context.Orders
+                                        .Include(o => o.User)
+										.Include(o => o.Product)
+										.Include(o => o.Warehouse)
+										.ToListAsync();
+			return orders;
+		}
 
 		async Task<List<Order>> IOrderService.GetAllOrdersFromWarehouse(int id)
 		{

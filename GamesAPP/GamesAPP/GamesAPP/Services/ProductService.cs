@@ -1,8 +1,8 @@
-﻿using GamesAPP.Shared.Data;
-using GamesAPP.Shared.Entities;
+﻿using GamesAPP.Data;
+using GamesAPP.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace GamesAPP.Shared.Services
+namespace GamesAPP.Services
 {
     public class ProductService : IProductService
     {

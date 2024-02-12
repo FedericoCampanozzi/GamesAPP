@@ -1,6 +1,6 @@
 ﻿using Bogus;
-using GamesAPP.Shared.Data;
-using GamesAPP.Shared.Entities;
+using GamesAPP.Data;
+using GamesAPP.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;

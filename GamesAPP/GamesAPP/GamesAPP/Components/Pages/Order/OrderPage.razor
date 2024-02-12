@@ -37,6 +37,7 @@ else if (AuthenticationService.UserAuthenticated?.Role == "Store")
 				<th>Product Name</th>
 				<th>UserName</th>
 				<th>Warehouse</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -49,7 +50,7 @@ else if (AuthenticationService.UserAuthenticated?.Role == "Store")
 					<td>@order.User?.UserName</td>
 					<td>@order.Warehouse?.Address</td>
 					<td>
-						<ButtonCaller Prefab="ORDER_PER_WAREHOUSE" />
+						<ButtonCaller Prefab="ORDER_PER_WAREHOUSE" Id="@order.Id" />
 					</td>
 				</tr>
 			}
@@ -72,8 +73,9 @@ else if (AuthenticationService.UserAuthenticated?.Role == "Store")
 			orders = ord.Where(o => o.User != null && o.User.Id == AuthenticationService.UserAuthenticated?.Id).ToList();
 		else
 			orders = new List<Order>(ord);
-
+		/*
 		foreach (Order o in orders)
 			Console.Write(o.Id + ";");
+		*/
 	}
 }

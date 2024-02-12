@@ -1,12 +1,12 @@
 ﻿using Bogus;
-using GamesAPP.Shared.Data;
+using GamesAPP.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GamesAPP.Shared.Entities
+namespace GamesAPP.Entities
 {
 	public class Order: IEntitySeeder<Order>
 	{
