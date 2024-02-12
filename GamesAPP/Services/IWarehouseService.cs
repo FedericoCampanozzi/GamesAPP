@@ -10,5 +10,6 @@ namespace GamesAPP.Services
 	public interface IWarehouseService
 	{
 		Task<List<Warehouse>> GetAllWarehouses();
+		Task<Warehouse> GetWarehouseById(int id);
 	}
 }

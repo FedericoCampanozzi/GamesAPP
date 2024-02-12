@@ -4,8 +4,8 @@
 @inject IUserService UserService
 @inject IProductService ProductService
 
-<h3>Dashboard</h3>
-
+<h2>Dashboard</h2>
+<h3>Users Table</h3>
 <table class="table">
 	<thead>
 		<tr>
@@ -36,7 +36,8 @@
 		}
 	</tbody>
 </table>
-
+<hr />
+<h2>Product Table</h2>
 <table class="table">
 	<thead>
 		<tr>
@@ -56,8 +57,8 @@
 				<td>@product.Description</td>
 				<td>@product.CreatedAt.ToString("dd MMM yyyy")</td>
 				<td>
-					<ButtonCaller Prefab="UPDATE_PROD" Id="@product.Id" />
-					<ButtonCaller Prefab="DELETE_PROD" Id="@product.Id" />
+					<ButtonCaller Prefab="UPDATE_PRODUCT" Id="@product.Id" />
+					<ButtonCaller Prefab="DELETE_PRODUCT" Id="@product.Id" />
 				</td>
 			</tr>
 		}
@@ -65,7 +66,7 @@
 </table>
 
 <div class="add-btn">
-	<ButtonCaller Prefab="CREATE_PROD" Id="-1" />
+	<ButtonCaller Prefab="CREATE_PRODUCT" Id="-1" />
 </div>
 
 @code {

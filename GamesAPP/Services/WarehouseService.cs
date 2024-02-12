@@ -18,6 +18,12 @@ namespace GamesAPP.Services
 			_context = context;
 		}
 
+		public async Task<Warehouse> GetWarehouseById(int id)
+		{
+			var warehouse = await _context.Warehouses.FindAsync(id);
+			return warehouse;
+		}
+
 		async Task<List<Warehouse>> IWarehouseService.GetAllWarehouses()
 		{
 			var warehouses = await _context.Warehouses.ToListAsync();

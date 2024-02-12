@@ -1,7 +1,53 @@
-﻿@page "/order-in-warehouse/{Id}"
+﻿@page "/order-in-warehouse/{Id:int}"
 
-<h1>order-in-warehouse</h1>
+@inject IOrderService OrderService
+@inject IWarehouseService WarehouseService
 
+<h1>Order in Warehouse</h1>
+<br />
+<span>Id: @warehouse.Id</span>
+<br />
+<span>Name: @warehouse.Name</span>
+<br />
+<span>Created: @warehouse.CreatedAt.ToString("dd MMM yyyy")</span>
+<br />
+<span>Address: @warehouse.Address</span>
+<br />
+<br />
+<hr />
+<br />
+<h2>Orders</h2>
+<table class="table">
+	<thead>
+		<tr>
+			<th>#ID</th>
+			<th>Date</th>
+			<th>Product Name</th>
+			<th>UserName</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (Order order in orders)
+		{
+			<tr>
+				<td>@order.Id</td>
+				<td>@order.CreatedAt.ToString("dd MMM yyyy")</td>
+				<td>@order.Product?.Name</td>
+				<td>@order.User?.UserName</td>
+			</tr>
+		}
+	</tbody>
+</table>
 @code {
+	[Parameter]
+	public int Id { get; set; }
 
+	List<Order> orders = new List<Order>();
+	Warehouse warehouse = new Warehouse();
+
+	protected override async Task OnParametersSetAsync()
+	{
+		orders = await OrderService.GetAllOrdersFromWarehouse((int)Id);
+		warehouse = await WarehouseService.GetWarehouseById((int)Id);
+	}
 }

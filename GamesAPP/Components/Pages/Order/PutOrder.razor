@@ -6,38 +6,43 @@
 @inject IWarehouseService WarehouseService
 @inject IOrderService OrderService
 
-<EditForm Model="Order" OnSubmit="InsertOrder">
+@if (Order != null)
+{
+	<EditForm Model="Order" OnSubmit="InsertOrder">
 
-	@if (AuthenticationService.UserAuthenticated?.Role == "Store")
-	{
 		<label>Product:</label>
-		<select value="@Order?.Product.Id" class="form-control">
+		<select value="@Order?.Product.Id" class="form-control" @onchange="UpdateProduct">
 			@foreach (Product p in Products)
 			{
 				<option value="@p.Id">@p.Name</option>
 			}
 		</select>
-		<label>Warehouse:</label>
-		<select value="@Order?.Warehouse?.Id" class="form-control">
-			@foreach (Product p in Products)
-			{
-				<option value="@p.Id">@p.Name</option>
-			}
-		</select>
-	}
 
-	<label>Quantity:</label>
-	@if(Order != null)
-	{
-		<InputNumber @bind-Value="@Order.Quantity" />
-	}
+		@if (AuthenticationService.UserAuthenticated?.Role == "Store")
+		{
+			<label>Warehouse:</label>
+			<select value="@Order?.Warehouse?.Id" class="form-control" @onchange="UpdateWarehouse">
+				@foreach (Warehouse w in Warehouses)
+				{
+					<option value="@w.Id">@w.Name</option>
+				}
+			</select>
+		}
+		<br />
+		<label>Quantity:</label>
+		@if (Order != null)
+		{
+			<InputNumber @bind-Value="@Order.Quantity" />
+		}
+		<hr />
+		<br />
+		<button type="submit" class="btn btn-outline-primary small-btn">
+			Put Order
+		</button>
+	</EditForm>
+}
 
-	<button type="submit" class="btn btn-outline-primary small-btn">
-		Put Order
-	</button>
-</EditForm>
-
-	@code {
+@code {
 	public Order? Order { get; set; }
 	public List<Product> Products { get; set; } = new List<Product>();
 	public List<Warehouse> Warehouses { get; set; }  = new List<Warehouse>();
@@ -55,15 +60,35 @@
 		{
 				Product = Products[0],
 				Warehouse = null,
-				User = AuthenticationService.UserAuthenticated
+				User = AuthenticationService.UserAuthenticated,
+				Quantity = 1
 		};
 	}
 
-	void InsertOrder()
+	async void InsertOrder()
 	{
 		if(Order != null)
 		{
-			OrderService.AddOrder(Order);	
+			await OrderService.AddOrder(Order);
+			NavigationManager.NavigateTo("/order", true);
+		}
+	}
+
+	private async void UpdateProduct(ChangeEventArgs e)
+	{
+		if(Order != null && e.Value != null)
+		{
+			var p = await ProductService.GetProductById(Convert.ToInt32(e.Value));
+			Order.Product = p;
+		}
+	}
+
+	private async void UpdateWarehouse(ChangeEventArgs e)
+	{
+		if (Order != null && e.Value != null)
+		{
+			var w = await WarehouseService.GetWarehouseById(Convert.ToInt32(e.Value));
+			Order.Warehouse = w;
 		}
 	}
 }

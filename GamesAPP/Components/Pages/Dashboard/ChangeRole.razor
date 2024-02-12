@@ -8,15 +8,15 @@
 
 <EditForm Model="user" OnSubmit="HandlerSubmit">
 	<label>Role:</label>
-	<select value="@user.Role" class="form-control">
+	<select value="@user.Role" class="form-control" @onchange="UpdateRole">
 		@foreach (string role in roles)
 		{
 			<option value="@role">@role</option>
 		}
 	</select>
-		<br />
-		<button type="submit" class="btn btn-outline-primary small-btn">
-			Change Role
+	<br />
+	<button type="submit" class="btn btn-outline-primary small-btn">
+		Change Role
 	</button>
 </EditForm>
 
@@ -37,5 +37,10 @@
 	{
 		await UserService.EditUser(user.Id, user);
 		NavigationManager.NavigateTo("/dashboard");
+	}
+	
+	private void UpdateRole(ChangeEventArgs e)
+	{
+		user.Role = e.Value.ToString();
 	}
 }

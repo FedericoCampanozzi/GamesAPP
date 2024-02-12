@@ -38,7 +38,12 @@ namespace GamesAPP.Services
 
 		async Task<List<Order>> IOrderService.GetAllOrdersFromWarehouse(int id)
 		{
-            var orders = await _context.Orders.Where(o=> o.Warehouse != null && o.Warehouse.Id == id).ToListAsync();
+            var orders = await _context.Orders
+										.Include(o => o.User)
+										.Include(o => o.Product)
+										.Include(o => o.Warehouse)
+				                        .Where(o=> o.Warehouse != null && o.Warehouse.Id == id)
+                                        .ToListAsync();
             return orders;
 		}
 	}

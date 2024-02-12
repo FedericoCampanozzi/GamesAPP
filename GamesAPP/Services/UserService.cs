@@ -35,7 +35,7 @@ namespace GamesAPP.Services
                 await _context.SaveChangesAsync();
                 return dbUser;
             }
-            throw new Exception("Product not found");
+            throw new Exception("User not found");
         }
 
         public async Task<List<string>> GetAllRoles()

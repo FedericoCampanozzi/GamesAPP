@@ -97,6 +97,9 @@
 			case ("CREATE_ORDER"):
 				NavigationManager.NavigateTo("/put-order");
 				break;
+			case ("CHANGE_ROLE"):
+				NavigationManager.NavigateTo($"/update-user-role/{Id}");
+				break;
 			case ("CREATE_PRODUCT"):
 				NavigationManager.NavigateTo("/create-product/CREATE");
 				break;

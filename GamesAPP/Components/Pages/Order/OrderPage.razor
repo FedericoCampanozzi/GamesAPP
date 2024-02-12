@@ -12,6 +12,7 @@
 				<th>Date</th>
 				<th>Product Name</th>
 				<th>UserName</th>
+				<th>Quantity</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -22,6 +23,7 @@
 					<td>@order.CreatedAt.ToString("dd MMM yyyy")</td>
 					<td>@order.Product?.Name</td>
 					<td>@order.User?.UserName</td>
+					<td>@order.Quantity</td>
 				</tr>
 			}
 		</tbody>
@@ -37,6 +39,7 @@ else if (AuthenticationService.UserAuthenticated?.Role == "Store")
 				<th>Product Name</th>
 				<th>UserName</th>
 				<th>Warehouse</th>
+				<th>Quantity</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -49,8 +52,12 @@ else if (AuthenticationService.UserAuthenticated?.Role == "Store")
 					<td>@order.Product?.Name</td>
 					<td>@order.User?.UserName</td>
 					<td>@order.Warehouse?.Address</td>
+					<td>@order.Quantity</td>
 					<td>
-						<ButtonCaller Prefab="ORDER_PER_WAREHOUSE" Id="@order.Id" />
+						@if (order.Warehouse != null)
+						{
+							<ButtonCaller Prefab="ORDER_PER_WAREHOUSE" Id="@order.Warehouse.Id" />
+						}
 					</td>
 				</tr>
 			}
